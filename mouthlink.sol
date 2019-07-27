@@ -30,7 +30,7 @@ contract mouthlink is ChainlinkClient {
         challenger = msg.sender;
     }
 
-    function requestPrice() public onlyChallengers {
+    function requestPrice() private onlyChallengers {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.fulfill.selector);
         req.add("get", "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD");
         req.add("path", "USD");
@@ -55,6 +55,11 @@ contract mouthlink is ChainlinkClient {
         require(msg.sender == challengee && msg.value == betAmount);
         challengeePriceBet = _priceBet;
         balance[msg.sender] += msg.value;
+    }
+
+    function bail() public payable {
+        require(balance[challengee] == 0);
+        challenger.transfer(address(this).balance);
     }
 
     function returnBetAmount() private view returns (uint256) {
