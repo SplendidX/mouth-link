@@ -15,18 +15,12 @@ contract mouthlink is ChainlinkClient {
     uint256 betAmount;
     uint256 endTime;
     uint248 public currentPrice;
-    //uint248 public testPrice = 1000;
 
     mapping(address => uint256) balance;
 
     modifier onlyChallengers() {
         require(msg.sender == challenger || msg.sender == challengee, "Caller isn't the challenger or challengee");
         _;
-    }
-
-    constructor() public {
-        //setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
-        //setChainlinkOracle(0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e);
     }
 
     function init(address _challenger) public {

@@ -46,7 +46,6 @@ contract WagerCloneFactory is CloneFactory {
         mouthlink(wagers[msg.sender]).returnFunded();
     }
 
-
     function withdraw() public payable {
         mouthlink(wagers[msg.sender]).withdraw();
     }
