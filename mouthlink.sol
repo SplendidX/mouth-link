@@ -25,9 +25,16 @@ contract mouthlink is ChainlinkClient {
     }
 
     constructor() public {
+        //setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
+        //setChainlinkOracle(0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e);
+    }
+
+    function init(address _challenger) public {
+        require(challenger == address(0));
+        require(_challenger != address(0));
+        challenger = _challenger;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
         setChainlinkOracle(0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e);
-        challenger = msg.sender;
     }
 
     function requestPrice() private onlyChallengers {
@@ -58,11 +65,11 @@ contract mouthlink is ChainlinkClient {
     }
 
     function bail() public payable {
-        require(balance[challengee] == 0);
+        require(msg.sender == challenger && balance[challengee] == 0);
         challenger.transfer(address(this).balance);
     }
 
-    function returnBetAmount() private view returns (uint256) {
+    function returnBetAmount() public view returns (uint256) {
         return betAmount;
     }
 
