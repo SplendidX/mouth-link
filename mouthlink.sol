@@ -43,6 +43,10 @@ contract mouthlink is ChainlinkClient {
         currentPrice = _price;
     }
 
+    function returnCurrentPrice() public view returns (uint248) {
+        return (currentPrice);
+    }
+
     function createBet(address _challengee, uint248 _priceBet, uint256 _endTime) public payable {
         require(msg.sender == challenger && msg.value > 0);
         challengee              = _challengee;
@@ -64,16 +68,16 @@ contract mouthlink is ChainlinkClient {
     }
 
     function returnBetAmount() public view returns (uint256) {
-        return betAmount;
+        return (betAmount);
     }
 
     function returnFunded() public view returns (uint256) {
-        return balance[msg.sender];
+        return (balance[msg.sender]);
     }
 
     function checkClosest(int a, int b) public view returns (int) {
-        int challengerPriceBetAbs = Math.abs(a - currentPrice) * 100;
-        int challengeePriceBetAbs = Math.abs(b - currentPrice) * 100;
+        int challengerPriceBetAbs = Math.abs((a * 100) - currentPrice);
+        int challengeePriceBetAbs = Math.abs((b * 100) - currentPrice);
         return (challengerPriceBetAbs == challengeePriceBetAbs ? 0 : (challengerPriceBetAbs < challengeePriceBetAbs ? a : b));
     }
 
